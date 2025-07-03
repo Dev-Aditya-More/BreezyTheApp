@@ -13,7 +13,7 @@ import com.example.breezytheapp.utils.Constants.API_KEY
 class WeatherViewModel : ViewModel() {
 
     private val weatherApi = RetrofitInstance.weatherApi
-    private val _weatherResult = MutableLiveData<NetworkResponse<WeatherModel>>()
+    private val _weatherResult = MutableLiveData<NetworkResponse<WeatherModel>>(NetworkResponse.Idle)
     val weatherResult : LiveData<NetworkResponse<WeatherModel>> = _weatherResult
 
     fun getData(city: String){

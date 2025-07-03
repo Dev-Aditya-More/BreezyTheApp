@@ -1,5 +1,7 @@
 package com.example.breezytheapp.ui.presentation
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -93,15 +96,32 @@ fun WeatherPage(viewModel: WeatherViewModel) {
 
         when (val result = weatherResult.value) {
             is NetworkResponse.Idle -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 48.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.nothing))
-                    LottieAnimation(
-                        composition,
-                        iterations = LottieConstants.IterateForever,
-                        modifier = Modifier.size(200.dp)
+                    Image(
+                        painter = painterResource(R.drawable.undraw_delivery_location_um5t),
+                        contentDescription = "Nothing to show",
+                        modifier = Modifier.size(240.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Text(
+                        text = "No location selected",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+
+                    Text(
+                        text = "Search for a city above to see weather info.",
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(top = 4.dp)
                     )
                 }
             }
@@ -123,18 +143,17 @@ fun WeatherPage(viewModel: WeatherViewModel) {
     }
 }
 
-
 @Composable
 fun WeatherDetails(data : WeatherModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 25.dp),
+            .padding(top = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.Bottom
         ) {
             Icon(
@@ -149,14 +168,14 @@ fun WeatherDetails(data : WeatherModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = " ${data.current.temp_c} ° c",
+            text = " ${data.current.temp_c} °c",
             fontSize = 56.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
 
         AsyncImage(
-            modifier = Modifier.size(160.dp),
+            modifier = Modifier.size(160.dp).padding(top = 16.dp).align(Alignment.CenterHorizontally),
             model = "https:${data.current.condition.icon}".replace("64x64","128x128"),
             contentDescription = "Condition icon"
         )
@@ -167,7 +186,10 @@ fun WeatherDetails(data : WeatherModel) {
             color = Color.Gray
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Card {
+
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -195,7 +217,6 @@ fun WeatherDetails(data : WeatherModel) {
             }
         }
     }
-
 }
 
 @Composable
