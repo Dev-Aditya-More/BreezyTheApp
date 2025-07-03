@@ -67,5 +67,7 @@ dependencies {
     implementation(libs.androidx.runtime)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.lottie.compose)
 
 }
