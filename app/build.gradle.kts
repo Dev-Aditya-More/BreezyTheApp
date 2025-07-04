@@ -69,5 +69,6 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.lottie.compose)
+    implementation(libs.accompanist.swiperefresh)
 
 }
