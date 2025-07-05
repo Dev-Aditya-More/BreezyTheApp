@@ -1,8 +1,14 @@
 package com.example.breezytheapp.ui.presentation
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.location.Geocoder
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +20,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,7 +31,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -56,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.breezytheapp.R
 import com.example.breezytheapp.data.remote.ForecastDay
@@ -76,9 +86,10 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
+@SuppressLint("MissingPermission")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
-fun WeatherPage(viewModel: WeatherViewModel) {
+fun WeatherPage(viewModel: WeatherViewModel = viewModel(factory = WeatherViewModelFactory(LocalContext.current))) {
     val context = LocalContext.current
     val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
@@ -87,6 +98,14 @@ fun WeatherPage(viewModel: WeatherViewModel) {
 
     val weatherResult = viewModel.weatherResult.observeAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
+    var isSearchOpen by remember { mutableStateOf(false) }
+    LaunchedEffect(weatherResult.value) {
+        if (weatherResult.value is NetworkResponse.Success) {
+            delay(300) // allow UI to settle before collapse
+            isSearchOpen = false
+            city = ""
+        }
+    }
 
     // Choose dynamic gradient (fallback or weather-aware later)
     val backgroundBrush = Brush.verticalGradient(
@@ -142,53 +161,83 @@ fun WeatherPage(viewModel: WeatherViewModel) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
-                    .padding(top = 8.dp),
+                    .padding(horizontal = 8.dp, vertical = 25.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = city,
-                    onValueChange = { city = it },
-                    label = {
-                        Text("Search for any location", color = Color.White)
-                    },
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.White,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.5f),
-                        cursorColor = Color.White,
-                        focusedLabelColor = Color.White,
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
-                    ),
-                    trailingIcon = {
-                        if (city.isNotBlank()) {
-                            IconButton(onClick = { city = "" }) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = "Clear text",
-                                    tint = Color.White
-                                )
+                // Menu Icon – stays constant
+                IconButton(onClick = { /* open drawer or saved cities */ }) {
+                    Icon(Icons.Default.Menu, contentDescription = "Saved Cities", tint = Color.White)
+                }
+
+                // Animated Search Bar
+                AnimatedVisibility(
+                    visible = isSearchOpen,
+                    enter = fadeIn() + expandHorizontally(expandFrom = Alignment.End),
+                    exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.End)
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 56.dp),
+                        value = city,
+                        onValueChange = { city = it },
+                        label = {
+                            Text("Search for any location", color = Color.White)
+                        },
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.White.copy(alpha = 0.5f),
+                            cursorColor = Color.White,
+                            focusedLabelColor = Color.White,
+                            unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        ),
+                        trailingIcon = {
+                            Row(modifier = Modifier.wrapContentWidth()) {
+                                if (city.isNotBlank()) {
+                                    IconButton(onClick = { city = "" }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Clear,
+                                            contentDescription = "Clear text",
+                                            tint = Color.White
+                                        )
+                                    }
+                                }
+                                IconButton(onClick = {
+                                    viewModel.getData(city)
+                                    keyboardController?.hide()
+                                    isSearchOpen = false // <-- Close search bar after submission
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = "Search",
+                                        tint = Color.White
+                                    )
+                                }
                             }
                         }
-                    }
-                )
-
+                    )
+                }
 
                 IconButton(onClick = {
-                    viewModel.getData(city)
-                    keyboardController?.hide()
+                    isSearchOpen = !isSearchOpen
+                    if (!isSearchOpen) {
+                        keyboardController?.hide()
+                        city = "" // optional: clear search on close
+                    }
                 }) {
                     Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search for any location",
+                        imageVector = if (isSearchOpen) Icons.Default.Close else Icons.Default.Search,
+                        contentDescription = if (isSearchOpen) "Close Search" else "Open Search",
                         tint = Color.White
                     )
                 }
             }
+
+
 
             when (val result = weatherResult.value) {
                 is NetworkResponse.Idle -> {
@@ -249,24 +298,15 @@ fun WeatherPage(viewModel: WeatherViewModel) {
 fun WeatherDetails(data: ForecastModel) {
 
 
-//    val backgroundBrush = Brush.verticalGradient(
-//        colors = when (data.current.condition.text.lowercase()) {
-//            "sunny", "clear" -> listOf(Color(0xFFFFE57F), Color(0xFFFF7043))
-//            "cloudy", "partly cloudy" -> listOf(Color(0xFF90A4AE), Color(0xFF607D8B))
-//            "rain", "light rain", "showers" -> listOf(Color(0xFF4FC3F7), Color(0xFF0288D1))
-//            "snow", "blizzard" -> listOf(Color(0xFFE0F7FA), Color(0xFFB2EBF2))
-//            else -> listOf(Color(0xFFB3E5FC), Color(0xFF81D4FA))
-//        }
-//    )
-
     Box(
         modifier = Modifier.fillMaxSize()
+//            .padding(bottom = 20.dp)
 //            .background(backgroundBrush)
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 50.dp),
+                .padding(top = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
@@ -330,7 +370,7 @@ fun WeatherDetails(data: ForecastModel) {
                     text = data.current.condition.text,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.Black,
+                    color = Color.Gray,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
