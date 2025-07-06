@@ -4,6 +4,7 @@ accompanistSwiperefresh = "0.36.0"
 agp = "8.11.0"
 coilCompose = "2.7.0"
 converterGson = "3.0.0"
+coreSplashscreen = "1.0.1"
 datastorePreferences = "1.1.7"
 kotlin = "2.2.0"
 coreKtx = "1.16.0"
@@ -17,6 +18,7 @@ activityCompose = "1.10.1"
 composeBom = "2025.06.01"
 lifecycleRuntimeKtxVersion = "2.9.1"
 lottieCompose = "6.6.7"
+material3 = "<latest-version>"
 navigationCompose = "2.9.1"
 playServicesLocation = "21.3.0"
 playServicesLocationVersion = "21.3.0"
@@ -30,6 +32,7 @@ ksp = "2.1.21-2.0.1"
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtxVersion" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -54,6 +57,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }

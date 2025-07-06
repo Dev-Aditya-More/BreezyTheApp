@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="Theme.BreezyTheApp" parent="android:Theme.Material.Light.NoActionBar" />
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.BreezyTheApp.NoSplash" parent= "Theme.AppCompat.Light.NoActionBar">
+        <!-- Disable Android 12+ SplashScreen -->
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

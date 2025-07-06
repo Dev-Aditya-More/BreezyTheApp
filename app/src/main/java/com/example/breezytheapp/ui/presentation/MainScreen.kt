@@ -226,7 +226,7 @@ fun WeatherPage(viewModel: WeatherViewModel = viewModel(factory = WeatherViewMod
                     isSearchOpen = !isSearchOpen
                     if (!isSearchOpen) {
                         keyboardController?.hide()
-                        city = "" // optional: clear search on close
+                        city = ""
                     }
                 }) {
                     Icon(
@@ -450,7 +450,8 @@ fun ForecastSection(forecastDays: List<ForecastDay>) {
             ) {
                 Text(
                     text = getDayOfWeek(forecast.date),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
                 )
                 AsyncImage(
                     model = "https:${forecast.day.condition.icon}",
@@ -460,7 +461,8 @@ fun ForecastSection(forecastDays: List<ForecastDay>) {
 
                 Text(
                     text = "${forecast.day.maxtemp_c.toFloatOrNull()?.toInt() ?: "--"}° / ${forecast.day.mintemp_c.toFloatOrNull()?.toInt() ?: "--"}°",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White
                 )
 
             }

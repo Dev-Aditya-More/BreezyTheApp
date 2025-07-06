@@ -73,4 +73,6 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.material3)
 }
