@@ -1,6 +1,6 @@
 # BreezyTheApp
 
-Breezy is a minimal and beautiful weather app built with Jetpack Compose, powered by WeatherAPI.com. It gives you current weather conditions and a 3-day forecast for any location you search — or right where you are.
+Breezy is a minimal and beautiful weather app built with Jetpack Compose, powered by WeatherAPI.com. It gives you current weather conditions and a 5-day forecast for any location you search — or right where you are.
 <center>
   <img src="weather-app.svg" alt="Breezy logo" width="15%" />
 </center>
