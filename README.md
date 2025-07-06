@@ -75,3 +75,17 @@ Breezy is a minimal and beautiful weather app built with Jetpack Compose, powere
 ### 🤝 Contributing
 
 Pull requests and feature suggestions are welcome! If you find a bug, open an issue and help make Breezy better.
+
+### 📥 How to Install
+
+  1. Download the app-release.apk from the Assets section below.
+
+  2. Open the downloaded file on your Android device.
+
+  3. If prompted with a security warning:
+
+  4. Tap Settings
+
+  5. Enable "Allow from this source"
+
+  6. Tap Install and you're good to go! ✅
