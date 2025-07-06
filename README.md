@@ -89,3 +89,9 @@ Pull requests and feature suggestions are welcome! If you find a bug, open an is
   5. Enable "Allow from this source"
 
   6. Tap Install and you're good to go! ✅
+
+
+Breezy is your personal weather companion with a sleek UI and real-time updates.
+Made with 💙 in Kotlin + Jetpack Compose by Dev-Aditya-More.
+
+  > If you face any issues, feel free to create an issue or reach out via GitHub Discussions.
