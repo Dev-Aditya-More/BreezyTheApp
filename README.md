@@ -54,13 +54,19 @@ Breezy is a minimal and beautiful weather app built with Jetpack Compose, powere
 2. Build the project and run it on the emulator (don't forget to add permissions in manifest)
 
    
-### Screenshots & gifs
+### Screenshots & gifs -   
 
 <p align="center"> 
   <img src="screenshots_recordings/Screenshot_20250706_010116.png" alt="Home Screen" width="250"/> 
   <img src="screenshots_recordings/Screenshot_20250706_010031.png" alt="Search Screen" width="250"/>
   <img src="screenshots_recordings/Screen_recording_20250706_153904.gif" alt="Recording Demo" width="250"/> 
 </p>
+<hr>
+<center>
+  <img src="screenshots_recordings/Breezy.png" alt="mockups" width="1000"/> 
+</center>
+
+<hr> 
 
 ### 💡 Future Ideas
 
