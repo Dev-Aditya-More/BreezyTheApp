@@ -1,6 +1,6 @@
 # Breezy
 
-Breezy is a minimal and beautiful weather app built with Jetpack Compose, powered by WeatherAPI.com. It gives you current weather conditions and a 5-day forecast for any location you search — or right where you are.
+Breezy is a minimal and beautiful weather app built with Jetpack Compose, powered by WeatherAPI.com. It gives you current weather conditions and a 5-day forecast for any location you search or right where you are.
 <center>
   <img src="weather-app.svg" alt="Breezy logo" width="15%" />
 </center>
@@ -51,7 +51,7 @@ Breezy is a minimal and beautiful weather app built with Jetpack Compose, powere
 
 > const val API_KEY = "your_actual_api_key_here"
 
-2. Build the project and run it on the emulator (don't forget to add permissions in manifest)
+2. Build the project and run it on the emulator (don't forget to add internet and other permissions in manifest)
 
    
 ### Screenshots & gifs -   
