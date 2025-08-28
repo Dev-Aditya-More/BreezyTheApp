@@ -11,6 +11,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardDefaults.shape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -55,6 +57,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -72,6 +76,12 @@ import com.example.breezytheapp.data.remote.ForecastDay
 import com.example.breezytheapp.data.remote.ForecastModel
 import com.example.breezytheapp.data.remote.NetworkResponse
 import com.example.breezytheapp.ui.presentation.viewModel.WeatherViewModel
+import com.example.breezytheapp.ui.theme.Green400
+import com.example.breezytheapp.ui.theme.Red500
+import com.example.breezytheapp.ui.theme.Red600
+import com.example.breezytheapp.ui.theme.Sky500
+import com.example.breezytheapp.ui.theme.Yellow200
+import com.example.breezytheapp.ui.theme.Zinc950
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -107,7 +117,6 @@ fun WeatherPage(viewModel: WeatherViewModel = viewModel(factory = WeatherViewMod
         }
     }
 
-    // Choose dynamic gradient (fallback or weather-aware later)
     val backgroundBrush = Brush.verticalGradient(
         colors = listOf(Color(0xFF222831), Color(0xFF393E46)) // dark, modern gradient
     )
@@ -165,9 +174,12 @@ fun WeatherPage(viewModel: WeatherViewModel = viewModel(factory = WeatherViewMod
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Menu Icon – stays constant
                 IconButton(onClick = { /* open drawer or saved cities */ }) {
-                    Icon(Icons.Default.Menu, contentDescription = "Saved Cities", tint = Color.White)
+                    Icon(
+                        painterResource(R.drawable.menu_24dp_e3e3e3_fill0_wght400_grad0_opsz24),
+                        contentDescription = "Menu",
+                        tint = Color.White
+                    )
                 }
 
                 // Animated Search Bar
@@ -209,10 +221,10 @@ fun WeatherPage(viewModel: WeatherViewModel = viewModel(factory = WeatherViewMod
                                 IconButton(onClick = {
                                     viewModel.getData(city)
                                     keyboardController?.hide()
-                                    isSearchOpen = false // <-- Close search bar after submission
+                                    isSearchOpen = false
                                 }) {
                                     Icon(
-                                        imageVector = Icons.Default.Search,
+                                        painterResource(R.drawable.search_24dp_e3e3e3_fill0_wght400_grad0_opsz24),
                                         contentDescription = "Search",
                                         tint = Color.White
                                     )
@@ -375,42 +387,85 @@ fun WeatherDetails(data: ForecastModel) {
                 )
             }
 
-            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item { Spacer(modifier = Modifier.height(22.dp)) }
 
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    shape = RoundedCornerShape(20.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.9f))
+                        .dropShadow(shape = shape) {
+                            radius = 60f
+                            color = Color(0xFF1E40AF) // Indigo-800 shadow
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0xFF3B82F6), // Blue-500
+                                    Color(0xFF0EA5E9)  // Sky-500
+                                )
+                            )
+                        }
+                        .border(
+                            width = 1.dp,
+                            shape = shape,
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0xFF3B82F6), // Blue-500 (top glow)
+                                    Color(0xFF0EA5E9)  // Sky-500 (bottom glow)
+                                )
+                            )
+                        )
+                        .background(
+                            color = Color(0xFF1E293B), // Slate-900 (dark navy)
+                            shape = shape
+                        )
+                        .innerShadow(shape = shape) {
+                            radius = 90f
+                            color = Color(0xFF1E40AF) // Indigo-800 inner shadow
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0xFF3B82F6), // Blue-500
+                                    Color(0xFF0EA5E9)  // Sky-500
+                                )
+                            )
+                            alpha = 0.3f
+                        }
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Row(
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color(0xFF222831), Color(0xFF393E46)) // dark, modern gradient
+                            )
+                        )
+                    ) {
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround
                         ) {
-                            WeatherKeyVal("Humidity", data.current.humidity)
-                            WeatherKeyVal("Wind Speed", data.current.wind_kph + " km/h")
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            WeatherKeyVal("UV", data.current.uv)
-                            WeatherKeyVal("Precipitation", data.current.precip_mm + " mm")
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            WeatherKeyVal("Local Time", data.location.localtime.split(" ")[1])
-                            WeatherKeyVal("Local Date", data.location.localtime.split(" ")[0])
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceAround
+                            ) {
+                                WeatherKeyVal("Humidity", data.current.humidity)
+                                WeatherKeyVal("Wind Speed", data.current.wind_kph + " km/h")
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceAround
+                            ) {
+                                WeatherKeyVal("UV", data.current.uv)
+                                WeatherKeyVal("Precipitation", data.current.precip_mm + " mm")
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceAround
+                            ) {
+                                WeatherKeyVal("Local Time", data.location.localtime.split(" ")[1])
+                                WeatherKeyVal("Local Date", data.location.localtime.split(" ")[0])
+                            }
                         }
                     }
                 }
             }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
 
             data.forecast?.forecastday?.let { forecastList ->
                 item {
@@ -428,7 +483,7 @@ fun WeatherKeyVal(key : String, value : String) {
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = value, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Text(text = value, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
         Text(text = key, fontWeight = FontWeight.SemiBold, color = Color.Gray)
     }
 }
