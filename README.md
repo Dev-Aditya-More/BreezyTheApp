@@ -24,7 +24,20 @@ Breezy is a minimal and beautiful weather app built with Jetpack Compose, powere
 
 <br>
 
-## Built With
+
+## Built using
+> [<img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Android/android2.svg">]()
+> [<img src="https://ziadoua.github.io/m3-Markdown-Badges/badges/Kotlin/kotlin2.svg">]()
+
+---
+
+## Get from
+
+> [<img src="https://github.com/vishal2376/snaptick/assets/38159691/f502e2ec-dbf4-4ed6-b23f-a47b74080fea" height="80">](https://github.com/Dev-Aditya-More/BreezyTheApp/releases)
+
+<br>
+
+## Overall Tech Stack
 
     🧪 Jetpack Compose (UI Toolkit)
 
@@ -47,9 +60,7 @@ Breezy is a minimal and beautiful weather app built with Jetpack Compose, powere
 
 ## Overview
 
-1. Replace your Weather API key in the util section from weatherapi.com:
-
-> const val API_KEY = "your_actual_api_key_here"
+1. Place your API_KEY in local.properties to keep it safe expose it via DefaultConfig
 
 2. Build the project and run it on the emulator (don't forget to add internet and other permissions in manifest)
 
